@@ -1,0 +1,54 @@
+{
+    "apps": [
+        {
+            "name": "payments-api",
+            "script": "./src/index.js",
+            "instances": "1",
+            "exec_mode": "cluster",
+            "error_file": "./logs/api_error.log",
+            "out_file": "./logs/api_out.log",
+            "pid_file": "./logs/api_pid.pid",
+            "ignore_watch": [
+                "node_modules",
+                ".DS_Store",
+                ".vscode",
+                "logs",
+                ".git"
+            ],
+            "trace": true,
+            "watch": true,
+            "env": {
+                "API": {
+                    "VERSION": "v1",
+                    "SECRET": "19e7d845f1d3d2c7ce4fb675a5da7f36",
+                    "REQUEST": {
+                        "LIMIT": "20mb",
+                        "EXTENDED": true,
+                        "TIMEOUT": "20s",
+                        "LOG": "dev"
+                    },
+                    "TOKEN": {
+                        "METHOD": "Bearer",
+                        "EXPIRES": 60,
+                        "AUTHORIZER": "jwt",
+                        "SESSION": false
+                    }
+                },
+                "MONGODB": {
+                    "URI": "mongodb://caiomajdalani:abc123@ds351428.mlab.com:51428/payments-api",
+                    "INDEX": true,
+                    "RECONNECT": true,
+                    "SSL": false,
+                    "POOLS": 300,
+                    "TRIES": 150
+                },
+                "PORT": {
+                    "HTTP": 5000,
+                    "HTTPS": 443
+                },
+                "API_TOKEN_EXPIRES_IN": 60,
+                "ENVIRONMENT": "LOCAL"
+            }
+        }
+    ]
+}

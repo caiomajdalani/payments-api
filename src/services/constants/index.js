@@ -1,0 +1,21 @@
+'use strict'
+
+module.exports = {
+    payment: {
+        CREATED: `PAYMENT_CREATED`,
+        ERROR: `PAYMENT_ERROR`,
+        INVALID: `PAYMENT_INVALID`,
+        UPDATED: `PAYMENT_UPDATED`,
+        NOT_FOUND: `PAYMENT_NOTFOUND`,
+        FOUND: `PAYMENT_FOUND`
+    },
+    default: {
+        EMPTY: `EMPTY`,
+        NOT_APPLICABLE: `NOT_APPLICABLE`,
+        NOT_INFORMED: `NOT_INFORMED`,
+        INVALID_OPTION: `INVALID_OPTION`,
+        EMPTY_OPTION: `EMPTY_OPTION`,
+        UNACKNOWLEDGED_OPTION: `UNACKNOWLEDGED_OPTION`,
+        TIMESTAMP: 0
+    }
+}
