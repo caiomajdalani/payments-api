@@ -23,7 +23,7 @@ module.exports = {
     fs: require('fs'),
     requestId: require('express-request-id')(),
     moment: require('moment-timezone'),
-    joi: require('joi'),
+    joi: require('@hapi/joi'),
     swagger: require(`express-swagger-generator`),
     schemas: require('../../models/index'),
     middlewares: require('../../middlewares/index'),
