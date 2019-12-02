@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "pm2 start pm2.json --env local && pm2 logs",
-    "test": "mocha ./src/tests/index.js --reporter mochawesome --reporter-options reportFilename=index"
+    "test": "jest"
   },
   "author": "Caio Majdalani",
   "dependencies": {
@@ -25,13 +25,12 @@
     "fs": "0.0.1-security",
     "health-check-mongodb": "0.0.3",
     "healthcheck-middleware": "1.0.1",
-    "helmet": "3.9.0",
+    "helmet": "^3.21.2",
     "http": "0.0.0",
     "https": "1.0.0",
     "jsonwebtoken": "8.3.0",
     "lodash": "^4.17.11",
     "md5": "2.2.1",
-    "mochawesome": "^4.1.0",
     "moment-timezone": "0.5.21",
     "mongodb": "^3.1.10",
     "mongoose": "^5.3.16",
@@ -44,7 +43,6 @@
     "promisify-supertest": "^1.0.0",
     "sha256": "0.2.0",
     "spdy": "3.4.7",
-    "supertest": "^4.0.2",
     "util": "0.10.3",
     "uuid": "3.1.0",
     "yarn": "^1.17.3"
@@ -52,7 +50,9 @@
   "devDependencies": {
     "chai": "4.1.2",
     "codecov": "^3.1.0",
-    "mocha": "^5.2.0"
+    "jest": "^24.9.0",
+    "mocha": "^5.2.0",
+    "supertest": "^4.0.2"
   },
   "license": "ISC"
 }
