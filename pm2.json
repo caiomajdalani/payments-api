@@ -20,7 +20,6 @@
             "env": {
                 "API": {
                     "VERSION": "v1",
-                    "SECRET": "19e7d845f1d3d2c7ce4fb675a5da7f36",
                     "REQUEST": {
                         "LIMIT": "20mb",
                         "EXTENDED": true,

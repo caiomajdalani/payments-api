@@ -7,7 +7,7 @@ module.exports = {
                 name: joi.string().required(),
                 email: joi.string().email().required(),
                 cpf: joi.string().length(11).required(),
-            }),
+            }).required(),
             date: joi.string().required(),
             payment: joi.object({
                 amount: joi.number().integer().required(),
@@ -23,8 +23,8 @@ module.exports = {
                     }).required(),
                     otherwise: joi.allow(null)
                 }),
-            })
-        })
+            }).required()
+        }).required()
     }),
     findOne: ({ joi }) => joi.object().unknown(),
     findAll: ({ joi }) => joi.object().unknown()
