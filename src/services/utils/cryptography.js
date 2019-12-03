@@ -4,7 +4,7 @@ const md5 = require('md5')
     , sha256 = require('sha256')
     , uuid = require('uuid')
     , { API_SECRET_KEY, API } = process.env
-    , _api = JSON.parse(API)
+    , _api = API ? JSON.parse(API) : null
 
 const toSHA256 = (string) => {
 
