@@ -3,7 +3,8 @@ module.exports = {
     coveragePathIgnorePatterns: [
         "/node_modules/",
         "/coverage/",
-        "jest.config.js"
+        "jest.config.js",
+        '/src/services/repositories/'
     ],
     testEnvironment: "node",
     collectCoverage: true,
