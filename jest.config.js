@@ -4,7 +4,9 @@ module.exports = {
         "/node_modules/",
         "/coverage/",
         "jest.config.js",
-        '/src/services/repositories/'
+        '/src/services/repositories/',
+        '/src/middlewares/authenticators/',
+        '/src/middlewares/databases/mongodb/index.js'
     ],
     testEnvironment: "node",
     collectCoverage: true,

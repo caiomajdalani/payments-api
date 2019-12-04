@@ -48,29 +48,29 @@ const _middlewares = ({ API }) => ({ parser: { json, urlencoded }, passport, cor
 
 const _authenticators = ({ API }) => ({ passport, jwt, middlewares, services }) => middlewares.authenticators.passport({ API })({ passport, jwt, services })
 
-const _sslOptions = ({ ENVIRONMENT }) => ({ fs, path }) => {
+// const _sslOptions = ({ ENVIRONMENT }) => ({ fs, path }) => {
 
-    if (ENVIRONMENT === 'PRODUCTION') {
-        return {
-            key: fs.readFileSync(path.join(__dirname, '../../../ssl/production/payparty_com_br.key'), 'utf8'),
-            cert: fs.readFileSync(path.join(__dirname, '../../../ssl/production/payparty_com_br.crt'), 'utf8'),
-            ca: fs.readFileSync(path.join(__dirname, '../../../ssl/production/payparty_com_br.ca-bundle.crt'), 'utf-8')
-        }
-    } else if (ENVIRONMENT === 'STAGE') {
-        return {
-            key: fs.readFileSync(path.join(__dirname, '../../../ssl/staging/private.key'), 'utf8'),
-            cert: fs.readFileSync(path.join(__dirname, '../../../ssl/staging/certificate.crt'), 'utf8'),
-            ca: fs.readFileSync(path.join(__dirname, '../../../ssl/staging/ca_bundle.crt'), 'utf-8')
-        }
-    } else {
-        return {
-            key: fs.readFileSync(path.join(__dirname, '../../../ssl/development/private.key'), 'utf8'),
-            cert: fs.readFileSync(path.join(__dirname, '../../../ssl/development/certificate.crt'), 'utf8'),
-            ca: fs.readFileSync(path.join(__dirname, '../../../ssl/development/ca_bundle.crt'), 'utf-8')
-        }
-    }
+//     if (ENVIRONMENT === 'PRODUCTION') {
+//         return {
+//             key: fs.readFileSync(path.join(__dirname, '../../../ssl/production/payparty_com_br.key'), 'utf8'),
+//             cert: fs.readFileSync(path.join(__dirname, '../../../ssl/production/payparty_com_br.crt'), 'utf8'),
+//             ca: fs.readFileSync(path.join(__dirname, '../../../ssl/production/payparty_com_br.ca-bundle.crt'), 'utf-8')
+//         }
+//     } else if (ENVIRONMENT === 'STAGE') {
+//         return {
+//             key: fs.readFileSync(path.join(__dirname, '../../../ssl/staging/private.key'), 'utf8'),
+//             cert: fs.readFileSync(path.join(__dirname, '../../../ssl/staging/certificate.crt'), 'utf8'),
+//             ca: fs.readFileSync(path.join(__dirname, '../../../ssl/staging/ca_bundle.crt'), 'utf-8')
+//         }
+//     } else {
+//         return {
+//             key: fs.readFileSync(path.join(__dirname, '../../../ssl/development/private.key'), 'utf8'),
+//             cert: fs.readFileSync(path.join(__dirname, '../../../ssl/development/certificate.crt'), 'utf8'),
+//             ca: fs.readFileSync(path.join(__dirname, '../../../ssl/development/ca_bundle.crt'), 'utf-8')
+//         }
+//     }
 
-}
+// }
 
 const _routers = express => express.Router()
 
@@ -102,7 +102,6 @@ const _upWithoutSSL = ({ ENVIRONMENT, API, PORT }) => async (dependencies) => {
     _api.use(routes(_utils)(dependencies))
 
     process.on('SIGINT', () => {
-        console.log(`SIGINT`)
         mongoose.connection.close(() => {
             console.log('Mongodb get disconnected on api termination')
             process.exit(0)
@@ -123,20 +122,21 @@ const _upWithoutSSL = ({ ENVIRONMENT, API, PORT }) => async (dependencies) => {
 
 const _setup = ({ ENVIRONMENT, API, PORT }) => async (dependencies) => {
 
+    _upWithoutSSL({ ENVIRONMENT, API, PORT })(dependencies)
 
-    switch (ENVIRONMENT) {
-        case 'DEVELOPMENT':
-            _upWithoutSSL({ ENVIRONMENT, API, PORT })(dependencies)
-            break;
+    // switch (ENVIRONMENT) {
+    //     case 'DEVELOPMENT':
+    //         _upWithoutSSL({ ENVIRONMENT, API, PORT })(dependencies)
+    //         break;
 
-        case 'LOCAL':
-            _upWithoutSSL({ ENVIRONMENT, API, PORT })(dependencies)
-            break;
+    //     case 'LOCAL':
+    //         _upWithoutSSL({ ENVIRONMENT, API, PORT })(dependencies)
+    //         break;
 
-        default:
-            _upWithoutSSL({ ENVIRONMENT, API, PORT })(dependencies)
-            break;
-    }
+    //     default:
+    //         _upWithoutSSL({ ENVIRONMENT, API, PORT })(dependencies)
+    //         break;
+    // }
 
 }
 
