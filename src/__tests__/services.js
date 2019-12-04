@@ -1,10 +1,25 @@
 'use strict'
 
+const services = require('../services/index')
 const checkers = require('../services/utils/checkers')
 const converters = require('../services/utils/converters')
 const validations = require('../services/validations/index')
 
 const dependencies = require('../configurations/dependencies/index')
+const moment = require('../configurations/dependencies/index').moment
+const joi = require('../configurations/dependencies/index').joi
+
+// const mockCallback = () => {
+//     return 'ok'
+// }
+
+const mockResponse = () => {
+    const res = {}
+    res.status = jest.fn()
+    res.json = jest.fn()
+    return res
+};
+  
 
 describe('Services', () => {
     describe('Utils', () => {
@@ -285,30 +300,62 @@ describe('Services', () => {
                                     expect(res.error).toBeTruthy()
                                 })
                             })
-                            // describe('Expiration', ()=>{
-                            //     it('Without Expiration', ()=>{
-                                    
-                            //     })
-                            //     it('Invalid Expiration (Type)', ()=>{
-                                    
-                            //     })
-                            // })
-                            // describe('Bin', ()=>{
-                            //     it('Without Bin', ()=>{
-                                    
-                            //     })
-                            //     it('Invalid Bin (Type)', ()=>{
-                                    
-                            //     })
-                            //     it('Invalid Bin (Length)', ()=>{
-                                    
-                            //     })
-                            //     it('Invalid Bin (Regex)', ()=>{
-                                    
-                            //     })
-                            // })
+                            describe('Expiration', ()=>{
+                                it('Without Expiration', ()=>{
+                                    delete validBody.body.payment.card.expiration
+                                    let res = validations.payment.create(dependencies).validate(validBody)
+                                    expect(res.error).toBeTruthy()
+                                })
+                                it('Invalid Expiration (Type)', ()=>{
+                                    validBody.body.payment.card.expiration = 123
+                                    let res = validations.payment.create(dependencies).validate(validBody)
+                                    expect(res.error).toBeTruthy()
+                                })
+                            })
+                            describe('Bin', ()=>{
+                                it('Without Bin', ()=>{
+                                    delete validBody.body.payment.card.bin
+                                    let res = validations.payment.create(dependencies).validate(validBody)
+                                    expect(res.error).toBeTruthy()
+                                })
+                                it('Invalid Bin (Type)', ()=>{
+                                    validBody.body.payment.card.bin = 123
+                                    let res = validations.payment.create(dependencies).validate(validBody)
+                                    expect(res.error).toBeTruthy()
+                                })
+                                it('Invalid Bin (Length)', ()=>{
+                                    validBody.body.payment.card.bin = '1234'
+                                    let res = validations.payment.create(dependencies).validate(validBody)
+                                    expect(res.error).toBeTruthy()
+                                })
+                                it('Invalid Bin (Regex)', ()=>{
+                                    validBody.body.payment.card.bin = 'abc'
+                                    let res = validations.payment.create(dependencies).validate(validBody)
+                                    expect(res.error).toBeTruthy()
+                                })
+                            })
                         })
                     })
+                })
+                describe('FindOne', ()=>{
+                    it('Valid Get', ()=>{
+                        let res = validations.payment.findOne(dependencies).validate({})
+                        expect(res.error).toBeUndefined()
+                    })
+                })
+                describe('FindAll', ()=>{
+                    it('Valid Get', ()=>{
+                        let res = validations.payment.findAll(dependencies).validate({})
+                        expect(res.error).toBeUndefined()
+                    })
+                })
+            })
+            describe('Verify', ()=>{
+                let request = {}
+                it('Valid Verification', async ()=>{
+                    let response = mockResponse()
+                    let result = validations.verify({services, moment, joi}, 'payment', 'create')(request,response, jest.fn())
+                    console.log(result)
                 })
             })
         })
