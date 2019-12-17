@@ -41,12 +41,12 @@ const _middlewares = ({ API }) => ({ parser: { json, urlencoded }, passport, cor
         helmet(),
         cors(),
         compression(),
-        passport.initialize(),
+        // passport.initialize(),
         requestId
     ]
 }
 
-const _authenticators = ({ API }) => ({ passport, jwt, middlewares, services }) => middlewares.authenticators.passport({ API })({ passport, jwt, services })
+// const _authenticators = ({ API }) => ({ passport, jwt, middlewares, services }) => middlewares.authenticators.passport({ API })({ passport, jwt, services })
 
 // const _sslOptions = ({ ENVIRONMENT }) => ({ fs, path }) => {
 
@@ -89,7 +89,7 @@ const _upWithoutSSL = ({ ENVIRONMENT, API, PORT }) => async (dependencies) => {
 
     const _utils = { router: _routers(express), limit: _limiter, schemas: schemas, services: services }
 
-    _authenticators({ API })(dependencies)
+    // _authenticators({ API })(dependencies)
 
     _api.get('/', (request, response) => {
         return response.status(200).json({ status: 'ok' })

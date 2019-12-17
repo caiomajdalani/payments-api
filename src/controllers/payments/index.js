@@ -165,7 +165,7 @@ module.exports = {
  * @returns {Error} 500 - Internal server error.
  */
     findAll: ({ services, schemas, moment }) => async (request, response) => {
-        console.log(response)
+        const { data: dataFindPayments, error: errorFindPayments } = await services.repositories.find(schemas.buyer, {})
         return services.replies.ok(response)()
     }
 }
