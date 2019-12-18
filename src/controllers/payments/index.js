@@ -30,6 +30,20 @@ const _mapPayment = (services, schemas, moment) => (body, buyer) => {
     }
 }
 
+const _query = (request) => {
+
+    let query = {}
+    let { cpf, name, email, initialDate, finalDate } = request.query
+
+    query = cpf ? Object.assign({}, query, { cpf: { '$regex': decodeURIComponent(cpf), '$options': 'i' } }) : query
+    query = name ? Object.assign({}, query, { name: { '$regex': decodeURIComponent(name), '$options': 'i' } }) : query
+    query = email ? Object.assign({}, query, { email: { '$regex': decodeURIComponent(email), '$options': 'i' } }) : query
+    query = initialDate ? Object.assign({}, query, { initialDate: { '$regex': decodeURIComponent(initialDate), '$options': 'i' } }) : query
+    query = finalDate ? Object.assign({}, query, { finalDate: { '$regex': decodeURIComponent(finalDate), '$options': 'i' } }) : query
+
+    return query
+}
+
 module.exports = {
 
 /**
@@ -128,10 +142,10 @@ module.exports = {
 
 /**
  * Find a Payment
- * @route GET /payments/{payment}
+ * @route GET /payments/{paymentId}
  * @group PAYMENTS - Resource for payments operations.
  * @param {token} Authorization.header - Bearer TOKEN for authorization
- * @param {objectId} payment.path.required - Payment ID
+ * @param {string} paymentId.path.required - Payment ID
  * @returns {responsePayment.model} 200 - Payment object with it properties.
  * @returns {Errors.model} 400 - Invalid properties.
  * { code: 008,  message: "Payment is invalid." }
@@ -141,7 +155,17 @@ module.exports = {
  * @returns {Error} 500 - Internal server error.
  */
     findOne: ({ services, schemas, moment }) => async (request, response) => {
-        return services.replies.ok(response)()
+        try {
+            const { data: dataFindPayment, error: errorFindPayment } = await services.repositories.findOne(schemas.payment, { _id: request.params.paymentId }, 'buyer')
+            if (dataFindPayment) {
+                return services.replies.ok(response)(dataFindPayment)
+            } else {
+                return services.replies.notFound(response)({ resource: services.constants.payment.NOT_FOUND, message: `Payment ${request.params.id} not found.` })
+            }
+        } catch (error) {
+            console.log(`error => `, error)
+            return services.replies.internalServerError(response)(`Error.`)
+        }
     },
 
 /**
@@ -165,7 +189,14 @@ module.exports = {
  * @returns {Error} 500 - Internal server error.
  */
     findAll: ({ services, schemas, moment }) => async (request, response) => {
-        const { data: dataFindPayments, error: errorFindPayments } = await services.repositories.find(schemas.buyer, {})
-        return services.replies.ok(response)()
+        try {
+            const query = _query(request)
+            console.log(query)
+            const { data: dataFindPayments, error: errorFindPayments } = await services.repositories.find(schemas.payment, {}, 0, 999, 'buyer')
+            return services.replies.ok(response)(dataFindPayments)
+        } catch (error) {
+            console.log(`error => `, error)
+            return services.replies.internalServerError(response)(`Error.`)
+        }
     }
 }

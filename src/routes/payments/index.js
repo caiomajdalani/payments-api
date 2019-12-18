@@ -8,7 +8,7 @@ module.exports = ({ router, services, schemas }) => ({ controllers, passport, mo
         .get([services.validations.verify({ services, moment, joi }, `payment`, `findAll`), controllers.payments.findAll({ services, schemas, moment })])
 
     router
-        .route('/payments/:payment')
+        .route('/payments/:paymentId')
         .get([services.validations.verify({ services, moment, joi }, `payment`, `findOne`), controllers.payments.findOne({ services, schemas, moment })])
 
     return router
